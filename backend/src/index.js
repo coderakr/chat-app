@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 
 import "dotenv/config";
+import job from "./lib/cron.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -46,6 +47,10 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
+
+    if (process.env.NODE_ENV === "production") {
+      job.start();
+    }
   } catch (error) {
     console.error("Failed to start server:", error);
   }
